@@ -14,18 +14,22 @@ Implemented Features
 - Supports both object field and property mappings
 
 Usage From CSV String
+```
   csv = new Avocado.CsvReader(stringData);
   objs = csv.ReadLines<ObjType>();
+```
 
 Usage From CSV File
+```
   file = new System.IO.StreamReader(filePath);
   csv = new Avocado.CsvReader(file);
   objs = csv.ReadLines<ObjType>();
+```
 
 To Indicate Object Field Mappings
   Use the Avocado.Csv.Column attribute to indicate which CSV column will populate a certain object field or peoperty. 
   Column indexes are zero based. Example,
-
+```
   public class SomeObj
   {
     [Avocado.Csv.Column(3)] // indicates that the fourth CSV column will populate this field
@@ -36,6 +40,7 @@ To Indicate Object Field Mappings
     [Avocado.Csv.Column(1)] // indicates that the second CSV column will populate this property
     public int age {get; set; }
   }
+```
 
 To Do
 - Allow for column mappings by name as well as number
