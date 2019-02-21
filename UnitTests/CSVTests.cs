@@ -29,6 +29,15 @@ namespace UnitTests
       [Avocado.Csv.Column(3)]
       public float eq_site_limit;    }
 
+    public class EFObj1
+    {
+      [Avocado.Csv.Column(0)]
+      public string name { get; set; }
+
+      [Avocado.Csv.Column(3)]
+      public System.DateTime dob { get; set; }
+    }
+
     [TestMethod]
     public void StringToTokens_Basic()
     {
@@ -64,10 +73,10 @@ namespace UnitTests
     public void GetFieldWithColumnIdx_Basic()
     {
       PlainObj1 obj;
-      System.Reflection.FieldInfo field;
+      System.Reflection.MemberInfo field;
 
       obj = new PlainObj1();
-      field = Avocado.CsvReader.GetFieldWithColumnIdx(1, obj);
+      field = Avocado.CsvReader.GetMemberWithColumnIdx(1, obj);
 
       Assert.AreEqual("age", field.Name);
     }
@@ -241,6 +250,27 @@ namespace UnitTests
       Assert.AreEqual("Yank", objs[1].name);
       Assert.AreEqual(27, objs[1].age);
       Assert.AreEqual(160.22f, objs[1].height);
+      Assert.AreEqual(new System.DateTime(1991, 1, 1), objs[1].dob);
+    }
+
+    [TestMethod]
+    public void ReadLines_FromFile_AsEFObj()
+    {
+      Avocado.CsvReader csv;
+      EFObj1[] objs;
+      System.IO.StreamReader file;
+
+      file = new System.IO.StreamReader("data\\sample1.csv");
+      csv = new Avocado.CsvReader(file);
+      objs = csv.ReadLines<EFObj1>();
+
+      Assert.IsNotNull(objs);
+      Assert.AreEqual(4, objs.Length);
+
+      Assert.AreEqual("Roger Ramjet", objs[0].name);
+      Assert.AreEqual(new System.DateTime(1971, 11, 13), objs[0].dob);
+
+      Assert.AreEqual("Yank", objs[1].name);
       Assert.AreEqual(new System.DateTime(1991, 1, 1), objs[1].dob);
     }
 

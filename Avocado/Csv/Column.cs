@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Avocado.Csv
 {
-  [System.AttributeUsage(System.AttributeTargets.Field)]
+  [System.AttributeUsage(System.AttributeTargets.Field|System.AttributeTargets.Property)]
   public class Column: System.Attribute
   {
     public int colIdx;

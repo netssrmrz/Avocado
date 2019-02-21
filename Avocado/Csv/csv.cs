@@ -80,24 +80,39 @@ namespace Avocado
     {
       int c;
       string token;
-      System.Reflection.FieldInfo field;
+      System.Reflection.MemberInfo field;
 
       for (c=0; c< tokens.Length; c++)
       {
         token = tokens[c];
-        field = GetFieldWithColumnIdx(c, obj);
+        field = GetMemberWithColumnIdx(c, obj);
         SetFieldValue(obj, field, token);
       }
     }
 
-    public static System.Reflection.FieldInfo GetFieldWithColumnIdx(int colIdx, Object obj)
+    public static System.Reflection.MemberInfo GetMemberWithColumnIdx(int colIdx, Object obj)
     {
-      System.Reflection.FieldInfo res = null;
-      System.Reflection.FieldInfo[] fields;
+      System.Reflection.MemberInfo res = null;
+      System.Reflection.MemberInfo[] fields;
+
+      fields = obj.GetType().GetFields();
+      res = GetMemberWithColumnIdx(colIdx, fields);
+
+      if (res == null)
+      {
+        fields = obj.GetType().GetProperties();
+        res = GetMemberWithColumnIdx(colIdx, fields);
+      }
+
+      return res;
+    }
+
+    public static System.Reflection.MemberInfo GetMemberWithColumnIdx(int colIdx, System.Reflection.MemberInfo[] fields)
+    {
+      System.Reflection.MemberInfo res = null;
       int c;
       int? fieldColIdx;
 
-      fields = obj.GetType().GetFields();
       for (c = 0; c < fields.Length; c++)
       {
         fieldColIdx = GetFieldColumnIdx(fields[c]);
@@ -108,7 +123,7 @@ namespace Avocado
       return res;
     }
 
-    public static int? GetFieldColumnIdx(System.Reflection.FieldInfo field)
+    public static int? GetFieldColumnIdx(System.Reflection.MemberInfo field)
     {
       int? res = null;
       object[] attrs;
@@ -120,22 +135,31 @@ namespace Avocado
       return res;
     }
 
-    public static void SetFieldValue(object obj, System.Reflection.FieldInfo field, string value)
+    public static void SetFieldValue(object obj, object field, string value)
     {
       object fieldValue=null;
+      Type fieldType=null;
 
       if (field != null)
       {
-        if (field.FieldType == typeof(int))
+        if (field is System.Reflection.FieldInfo)
+          fieldType = ((System.Reflection.FieldInfo)field).FieldType;
+        else if (field is System.Reflection.PropertyInfo)
+          fieldType = ((System.Reflection.PropertyInfo)field).PropertyType;
+
+        if (fieldType == typeof(int))
           fieldValue = ToInt(value);
-        else if (field.FieldType == typeof(float))
+        else if (fieldType == typeof(float))
           fieldValue = ToFloat(value);
-        else if (field.FieldType == typeof(string))
+        else if (fieldType == typeof(string))
           fieldValue = value;
-        else if (field.FieldType == typeof(System.DateTime))
+        else if (fieldType == typeof(System.DateTime))
           fieldValue = ToDateTime(value);
 
-        field.SetValue(obj, fieldValue);
+        if (field is System.Reflection.FieldInfo)
+          ((System.Reflection.FieldInfo)field).SetValue(obj, fieldValue);
+        else if (field is System.Reflection.PropertyInfo)
+          ((System.Reflection.PropertyInfo)field).SetValue(obj, fieldValue);
       }
     }
 
