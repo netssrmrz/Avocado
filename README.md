@@ -27,7 +27,7 @@ Usage From CSV File
 ```
 
 To Indicate Object Field Mappings
-  Use the Avocado.Csv.Column attribute to indicate which CSV column will populate a certain object field or peoperty. 
+  Use the Avocado.Csv.Column attribute to indicate which CSV column will populate a certain object field or property. 
   Column indexes are zero based. Example,
 ```
   public class SomeObj
@@ -46,6 +46,7 @@ To Do
 - Allow for column mappings by name as well as number
 - Allow for different delimeter characters
 - Allow for additional column data types
+- Allow for mappings via parameters or config settings in case attributes cannot be used
 
 Development Environment
 - Microsoft Visual Studio Community 2017, Version 15.9.6
