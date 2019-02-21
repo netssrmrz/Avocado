@@ -1,4 +1,4 @@
-# Avocado
+# Avocado Test
 
 Assumptions
 - Only CSV read functionality required, not write.
@@ -46,3 +46,9 @@ To Do
 - Allow for column mappings by name as well as number
 - Allow for different delimeter characters
 - Allow for additional column data types
+
+Development Environment
+- Microsoft Visual Studio Community 2017, Version 15.9.6
+- Entity Framework 6
+- .NET Framework 4.6.1
+- MS SQL Server Local Db
