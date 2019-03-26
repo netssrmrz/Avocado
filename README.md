@@ -1,7 +1,7 @@
 # Avocado Test
 
 Requirements  
-- tba
+- https://drive.google.com/open?id=1iiecZP1jqjsNfAMEKQsrOlK1aiahAZnpiT-AvThI7Cs
 
 Assumptions
 - Only CSV read functionality required, not write.
